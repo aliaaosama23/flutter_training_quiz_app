@@ -29,8 +29,6 @@ class QuizzApp extends StatefulWidget {
 class _QuizzAppState extends State<QuizzApp> {
   int questionNumber = 0;
   List<Icon> scoreResults = [];
-  // List<String> questions = ['question1', 'question2', 'question3', 'question3'];
-  // List<bool> answers = [true, false, true, true];
 
   List<Question> questionsBank = [
     Question(questionText: 'question1', questionAnswer: true),
@@ -103,60 +101,70 @@ class _QuizzAppState extends State<QuizzApp> {
                 ),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      Colors.orangeAccent,
-                    ),
-                    foregroundColor: MaterialStateProperty.all(
-                      Colors.white,
-                    ),
-                    textStyle: MaterialStateProperty.all(
-                      const TextStyle(
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    updateAnswer(true);
-                  },
-                  child: const Text('True'),
-                ),
-              ),
+            AnswerButton(
+              btnColor: Colors.orangeAccent,
+              answerText: 'True',
+              onPress: () => updateAnswer(true),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      Colors.red,
-                    ),
-                    foregroundColor: MaterialStateProperty.all(
-                      Colors.white,
-                    ),
-                    textStyle: MaterialStateProperty.all(
-                      const TextStyle(fontSize: 25),
-                    ),
-                  ),
-                  onPressed: () {
-                    updateAnswer(false);
-                  },
-                  child: const Text('False'),
-                ),
-              ),
+            AnswerButton(
+              btnColor: Colors.red,
+              answerText: 'False',
+              onPress: () => updateAnswer(false),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: scoreResults,
-              ),
-            )
+            AnswersBar(scoreResults: scoreResults)
           ],
         ),
+      ),
+    );
+  }
+}
+
+class AnswerButton extends StatelessWidget {
+  const AnswerButton(
+      {Key? key,
+      required this.answerText,
+      required this.btnColor,
+      required this.onPress})
+      : super(key: key);
+  final String answerText;
+  final VoidCallback? onPress;
+  final Color btnColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(btnColor),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            textStyle: MaterialStateProperty.all(
+              const TextStyle(fontSize: 25),
+            ),
+          ),
+          onPressed: onPress,
+          child: Text(answerText),
+        ),
+      ),
+    );
+  }
+}
+
+class AnswersBar extends StatelessWidget {
+  const AnswersBar({
+    Key? key,
+    required this.scoreResults,
+  }) : super(key: key);
+
+  final List<Icon> scoreResults;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: scoreResults,
       ),
     );
   }
