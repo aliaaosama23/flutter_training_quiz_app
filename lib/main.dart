@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'Models/question.dart';
+import 'Widgets/answer_bar.dart';
+import 'Widgets/answer_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,30 +47,30 @@ class _QuizzAppState extends State<QuizzApp> {
       });
     } else {
       Alert(
-        type: AlertType.success,
-        context: context,
-        title: 'End',
-        desc: "Your quiz is ended",
-      ).show();
+              type: AlertType.success,
+              context: context,
+              title: 'End',
+              desc: "Your quiz is ended")
+          .show();
     }
 
-    setState(() {
-      if (userAnswer == correctAnswer) {
-        scoreResults.add(
-          const Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-        );
-      } else {
-        scoreResults.add(
-          const Icon(
-            Icons.close,
-            color: Colors.red,
-          ),
-        );
-      }
-    });
+    //setState(() {
+    if (userAnswer == correctAnswer) {
+      scoreResults.add(
+        const Icon(
+          Icons.check,
+          color: Colors.green,
+        ),
+      );
+    } else {
+      scoreResults.add(
+        const Icon(
+          Icons.close,
+          color: Colors.red,
+        ),
+      );
+    }
+    // });
   }
 
   @override
@@ -114,57 +116,6 @@ class _QuizzAppState extends State<QuizzApp> {
             AnswersBar(scoreResults: scoreResults)
           ],
         ),
-      ),
-    );
-  }
-}
-
-class AnswerButton extends StatelessWidget {
-  const AnswerButton(
-      {Key? key,
-      required this.answerText,
-      required this.btnColor,
-      required this.onPress})
-      : super(key: key);
-  final String answerText;
-  final VoidCallback? onPress;
-  final Color btnColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(btnColor),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-            textStyle: MaterialStateProperty.all(
-              const TextStyle(fontSize: 25),
-            ),
-          ),
-          onPressed: onPress,
-          child: Text(answerText),
-        ),
-      ),
-    );
-  }
-}
-
-class AnswersBar extends StatelessWidget {
-  const AnswersBar({
-    Key? key,
-    required this.scoreResults,
-  }) : super(key: key);
-
-  final List<Icon> scoreResults;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: scoreResults,
       ),
     );
   }
