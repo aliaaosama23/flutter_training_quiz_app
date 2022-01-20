@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import 'Models/question.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -38,48 +40,37 @@ class _QuizzAppState extends State<QuizzApp> {
   ];
 
   updateAnswer(bool userAnswer) {
-    // questionsBank[questionNumber] => obj of Question class
-    // we can access properties by .
     bool correctAnswer = questionsBank[questionNumber].questionAnswer;
-    if (userAnswer == correctAnswer) {
+    if (questionNumber < questionsBank.length - 1) {
       setState(() {
-        if (questionNumber < questionsBank.length - 1) {
-          questionNumber++;
-          scoreResults.add(
-            const Icon(
-              Icons.check,
-              color: Colors.green,
-            ),
-          );
-        } else {
-          Alert(
-            type: AlertType.success,
-            context: context,
-            title: 'End',
-            desc: "Your quiz is ended",
-          ).show();
-        }
+        questionNumber++;
       });
     } else {
-      setState(() {
-        if (questionNumber < questionsBank.length - 1) {
-          questionNumber++;
-          scoreResults.add(
-            const Icon(
-              Icons.close,
-              color: Colors.red,
-            ),
-          );
-        } else {
-          Alert(
-            type: AlertType.success,
-            context: context,
-            title: 'End',
-            desc: "Your quiz is ended",
-          ).show();
-        }
-      });
+      Alert(
+        type: AlertType.success,
+        context: context,
+        title: 'End',
+        desc: "Your quiz is ended",
+      ).show();
     }
+
+    setState(() {
+      if (userAnswer == correctAnswer) {
+        scoreResults.add(
+          const Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+        );
+      } else {
+        scoreResults.add(
+          const Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -169,14 +160,4 @@ class _QuizzAppState extends State<QuizzApp> {
       ),
     );
   }
-}
-
-class Question {
-  final String questionText;
-  final bool questionAnswer;
-
-  Question({
-    required this.questionText,
-    required this.questionAnswer,
-  });
 }
