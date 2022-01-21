@@ -47,11 +47,29 @@ class _QuizzAppState extends State<QuizzApp> {
       });
     } else {
       Alert(
-              type: AlertType.success,
-              context: context,
-              title: 'End',
-              desc: "Your quiz is ended")
-          .show();
+          type: AlertType.success,
+          context: context,
+          title: 'End',
+          desc: "Your quiz is ended",
+          buttons: [
+            DialogButton(
+              child: const Text(
+                "reset",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+              onPressed: () => {
+                Navigator.pop(context),
+                setState(() {
+                  questionNumber = 0;
+                  scoreResults = [];
+                })
+              },
+              width: 120,
+            )
+          ]).show();
     }
 
     //setState(() {
